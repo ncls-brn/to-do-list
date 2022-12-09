@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"time"
 
 	"github.com/thedevsaddam/renderer"
@@ -33,6 +34,21 @@ type (
 	}
 )
 
-func main() {
+func init() {
+	rnd = renderer.New()
+	sess, err := mgo.Dial(hostName)
+	checkErr(err)
+	sess.SetMode(mgo.Monotonic, true)
+	db = sess.DB(dbName)
+}
 
+func checkErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func main() {
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 }
